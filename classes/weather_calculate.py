@@ -23,15 +23,24 @@ class weather_calculate:
         self.full_date_for_average_temp = ''
         self.full_date_for_average_temp = ''
         self.full_date_for_average_humidity = ''
-        
+
+        self.sum_max_temp = 0
+        self.sum_min_temp = 0
+        self.sum_humidity_temp = 0        
+
+        self.no_of_max_temp = 0
+        self.no_of_min_temp = 0
+        self.no_of_humidity_temp = 0        
 
     def calculate(self):
 
         if 'e' in self.type:
             self.calculate_task_1()
             self.populate_result()
+
         elif 'a' in self.type:
-            self.calculate_task_2
+            self.calculate_task_2()
+            self.populate_result()
             
         elif 'c' in self.type:
             self.calculate_task_3()
@@ -64,7 +73,22 @@ class weather_calculate:
                     self.full_date_for_most_humidity = self.convert_date(full_date)
 
     def calculate_task_2(self):
-        pass
+        for i in self.list_of_weather_data:
+            # full_date = i['full_date']
+            max_temperature = i['max_temperature']
+            min_temperature = i['min_temperature']
+            most_humidity = i['mean_humidity']
+            
+            if len(max_temperature) > 0:
+                self.sum_max_temp += int(max_temperature)
+                self.no_of_max_temp += 1
+            if len(min_temperature) > 0:
+                self.sum_min_temp += int(min_temperature)
+                self.no_of_min_temp += 1
+            if len(most_humidity) > 0:
+                self.sum_humidity_temp += int(most_humidity)
+                self.no_of_humidity_temp += 1
+        
 
     def calculate_task_3(self):
         pass
@@ -78,7 +102,9 @@ class weather_calculate:
             self.result['full_date_for_lowest_temp'] = self.full_date_for_lowest_temp
             self.result['full_date_for_most_humidity'] = self.full_date_for_most_humidity
         elif 'a' in self.type:
-            self.calculate_task_2
+            self.result['sum_max_temp']  =  int(self.sum_max_temp / self.no_of_max_temp)
+            self.result['sum_min_temp']  =  int(self.sum_min_temp  / self.no_of_min_temp)
+            self.result['sum_humidity_temp']  =  int(self.sum_humidity_temp / self.no_of_humidity_temp)
             
         elif 'c' in self.type:
             self.calculate_task_3()
