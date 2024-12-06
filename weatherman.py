@@ -1,15 +1,41 @@
 import sys
 from utils.checkArgs import checkArgs
 from utils.customError import CustomError
+from classes.readfile import ReadFile
+from classes.weather_calculate import weather_calculate
+from classes.weather_report import weather_report
+
+list_of_weather_data = []
+calculation_result = {}
+
 def main():
     try:
         if len(sys.argv) > 1:
-            all_args = sys.argv[1:]
-            print(len(all_args))
+            list_of_operations = sys.argv[1:]
             
-            for i in range(0, len(all_args), 2):
-                checkArgs(all_args[i], all_args[i+1])
-            print("Arguments:", all_args)
+            #check if the passed cmd args are valid or not
+            for i in range(0, len(list_of_operations), 2):
+                checkArgs(list_of_operations[i], list_of_operations[i+1])
+            
+            for i in range(0, len(list_of_operations), 2):
+                if 'a' in list_of_operations[i]:
+                    print('-a', list_of_operations[i+1])
+                if 'e' in list_of_operations[i]:
+                    #read files
+                    obj = ReadFile('weather_reports',list_of_operations[i+1])
+                    obj.readFile(list_of_weather_data)
+
+                    #calculate result base on data
+                    obj = weather_calculate(list_of_weather_data, calculation_result, list_of_operations[i])
+                    obj.calculate()
+
+                    obj = weather_report(calculation_result, list_of_operations[i])
+                    obj.print()
+                if 'c' in list_of_operations[i]:
+                    print('-c', list_of_operations[i+1])
+            
+            
+                     
         else:
             print("No additional arguments provided.")
     except CustomError as e:
