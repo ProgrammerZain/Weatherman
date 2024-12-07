@@ -1,5 +1,6 @@
 import os
 from utils.customError import CustomError
+
 class ReadFileYear:
 
 
@@ -10,20 +11,19 @@ class ReadFileYear:
     
     def readFile(self, list_of_weather_data):
         files_and_dirs = os.listdir(self.path)
-        try:
-            files = [file for file in files_and_dirs if os.path.isfile(os.path.join(self.path, file)) and self.year in file]
-            
-            for file in files:
-                with open(f'{self.path}/{file}', 'r') as file_to_read:
-                    for i, line in enumerate(file_to_read):
-                        if i==0:
-                            continue
-                        
-                        content = line.strip()
-                        list_of_weather_data.append(self.readContent(content))
+        
+        files = [file for file in files_and_dirs if os.path.isfile(os.path.join(self.path, file)) and self.year in file]
+        if len(files) < 1:
+            raise CustomError(f'File does not exist for {self.year}')
+        for file in files:
+            with open(f'{self.path}/{file}', 'r') as file_to_read:
+                for i, line in enumerate(file_to_read):
+                    if i==0:
+                        continue
                     
-        except FileNotFoundError:
-            print(f'File does not exist for {self.year}')
+                    content = line.strip()
+                    list_of_weather_data.append(self.readContent(content))
+                    
 
     def readContent(self,content):
         file_data = content.split(',')
@@ -55,19 +55,19 @@ class ReadFileMonth:
             print('program stopped for monthly report')
         else:
             files_and_dirs = os.listdir(self.path)
-            try:
-                files = [file for file in files_and_dirs if os.path.isfile(os.path.join(self.path, file)) and self.year in file and self.month in file]
-                for file in files:
-                    with open(f'{self.path}/{file}', 'r') as file_to_read:
-                        for i, line in enumerate(file_to_read):
-                            if i==0:
-                                continue
-                            
-                            content = line.strip()
-                            list_of_weather_data.append(self.readContent(content))
+            
+            files = [file for file in files_and_dirs if os.path.isfile(os.path.join(self.path, file)) and self.year in file and self.month in file]
+            if len(files) < 1:
+                raise CustomError(f'File does not exist for {self.year} year and {self.month} month')
+            for file in files:
+                with open(f'{self.path}/{file}', 'r') as file_to_read:
+                    for i, line in enumerate(file_to_read):
+                        if i==0:
+                            continue
                         
-            except FileNotFoundError:
-                print(f'File does not exist for {self.year}')
+                        content = line.strip()
+                        list_of_weather_data.append(self.readContent(content))
+                    
 
     def readContent(self,content):
         file_data = content.split(',')
