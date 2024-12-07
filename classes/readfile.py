@@ -85,7 +85,7 @@ class ReadFileMonth:
 
     def get_month(self, num):
         
-            if len(num.split('/')) < 2 :
+            if len(num.split('/')) < 2 or num.split('/')[1] == '' :
                 self.error = True
                 raise CustomError(f'Invalid No number was Provided. For month {self.year}, please provide a number between 1 and 12.')
                 

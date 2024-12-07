@@ -14,7 +14,20 @@ class weather_report:
             self.print_task_2()
             
         elif 'c' in self.type:
-            self.print_task_3()
+            while True:
+                user_input = input("Would you like to see the result in 1 line: (y/n): ").strip().lower()  
+                if user_input == 'y':
+                    self.print_task_4()
+                    break  
+                elif user_input == 'n':
+                    self.print_task_3()
+                    break  
+                else:
+                    print("Invalid input. Please enter 'y' or 'n'.")
+
+
+        else:
+            print("Enter either e, a, or c for the type")
         
     def print_task_1(self):
         print(f'Highest: {self.result['max_temperature']} on {self.result['full_date_for_highest_temp']}')
@@ -28,4 +41,18 @@ class weather_report:
 
         
     def print_task_3(self):
-        pass
+        if isinstance(self.result['result'], list):
+            for i in range(len(self.result['result'])):
+                max = int(self.result['result'][i]['max_temperature'])
+                min = int(self.result['result'][i]['min_temperature'])
+                print(i+1, "\033[31m+\033[0m" * max, f'{max}C')
+                print(i+1, "\033[34m+\033[0m" * min, f'{min}C')
+
+    def print_task_4(self):
+        if isinstance(self.result['result'], list):
+            for i in range(len(self.result['result'])):
+                max = int(self.result['result'][i]['max_temperature'])
+                min = int(self.result['result'][i]['min_temperature'])
+                print(i+1, "\033[31m+\033[0m" * max, "\033[34m+\033[0m" * min, f'{min}C  - {max}C')
+
+        

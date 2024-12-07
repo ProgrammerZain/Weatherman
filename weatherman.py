@@ -14,12 +14,17 @@ def main():
         if len(sys.argv) > 1:
             list_of_operations = sys.argv[1:]
             
+            length_of_arg = len(list_of_operations)
+            if length_of_arg % 2 == 1:
+                raise CustomError('Arguments provided must be -option and a valid date.')
+
             #check if the passed cmd args are valid or not
-            for i in range(0, len(list_of_operations), 2):
+            for i in range(0, length_of_arg, 2):
                 checkArgs(list_of_operations[i], list_of_operations[i+1])
             
             list_of_weather_data = []
             calculation_result = {}
+            
             for i in range(0, len(list_of_operations), 2):
                 if 'a' in list_of_operations[i]:
                     list_of_weather_data = []
@@ -44,8 +49,17 @@ def main():
 
                     obj = weather_report(calculation_result, list_of_operations[i])
                     obj.print()
+
                 if 'c' in list_of_operations[i]:
-                    print('-c', list_of_operations[i+1])
+                    list_of_weather_data = []
+                    obj = ReadFileMonth(weather_folder_name, list_of_operations[i+1])
+                    obj.readFile(list_of_weather_data)
+                    
+                    obj = weather_calculate(list_of_weather_data, calculation_result, list_of_operations[i])
+                    obj.calculate()
+
+                    obj = weather_report(calculation_result, list_of_operations[i])
+                    obj.print()
             
             
                      

@@ -30,7 +30,8 @@ class weather_calculate:
 
         self.no_of_max_temp = 0
         self.no_of_min_temp = 0
-        self.no_of_humidity_temp = 0        
+        self.no_of_humidity_temp = 0   
+        self.list_of_weather_data_result = []     
 
     def calculate(self):
 
@@ -44,6 +45,7 @@ class weather_calculate:
             
         elif 'c' in self.type:
             self.calculate_task_3()
+            self.populate_result()
         else:
             print('Enter either e, a, or c for the type')
 
@@ -74,7 +76,7 @@ class weather_calculate:
 
     def calculate_task_2(self):
         for i in self.list_of_weather_data:
-            # full_date = i['full_date']
+
             max_temperature = i['max_temperature']
             min_temperature = i['min_temperature']
             most_humidity = i['mean_humidity']
@@ -91,6 +93,18 @@ class weather_calculate:
         
 
     def calculate_task_3(self):
+        for i in self.list_of_weather_data:
+            max_temperature = i['max_temperature']
+            min_temperature = i['min_temperature']
+            
+            if len(max_temperature) > 0:
+                if len(min_temperature) > 0:
+                    self.list_of_weather_data_result.append({
+                        'max_temperature' : int(max_temperature),
+                        'min_temperature' : int(min_temperature)
+                        })
+            
+        
         pass
 
     def populate_result(self):
@@ -107,7 +121,7 @@ class weather_calculate:
             self.result['sum_humidity_temp']  =  int(self.sum_humidity_temp / self.no_of_humidity_temp)
             
         elif 'c' in self.type:
-            self.calculate_task_3()
+            self.result['result'] = self.list_of_weather_data_result
 
     def convert_date(self,date_str):
         date_obj = datetime.strptime(date_str, '%Y-%m-%d')
